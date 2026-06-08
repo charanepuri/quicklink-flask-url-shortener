@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>QuickLink</title>
+
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    </head>
+    <body>
+
+        <nav class="navbar navbar-expand-lg navbar-dark flask-navbar">
+            <div class="container">
+
+                <a class="navbar-brand fw-bold" href="/">
+                    🐍 QuickLink Flask
+                </a>
+
+                <div>
+                    <a href="/" class="btn btn-outline-light me-2">
+                        Home
+                    </a>
+
+                    <a href="/dashboard" class="btn btn-success">
+                        Dashboard
+                    </a>
+                </div>
+
+            </div>
+        </nav>
+
+        {% block content %}
+        {% endblock %}
+
+        <footer class="footer-section mt-5">
+
+            <div class="container text-center">
+
+                <h5>QuickLink URL Shortener</h5>
+
+                <p>
+                    Built with Flask, SQLAlchemy, SQLite, Bootstrap and Chart.js
+                </p>
+
+                <div class="footer-links">
+
+                    <a href="https://portfolio-site-django.onrender.com" target="_blank">
+                        Django Portfolio   
+                    </a>
+
+                    <a href="https://github.com/charanepuri" target="_blank">
+                        GitHub
+                    </a>
+
+                    <a href="https://charan-react-portfolio.vercel.app" target="_blank">
+                        React Portfolio
+                    </a>
+
+                    <a href="https://www.linkedin.com/in/charan-teja-972aa9231/" target="_blank">
+                        LinkedIn
+                    </a>
+
+                    <a href="https://www.instagram.com/_just_call_me_charan_tej" target="_blank">
+                        Instagram
+                    </a>
+
+                    <a href=" https://www.snapchat.com/add/justcalltej2003?share_id=o3MYfXqlpYE&locale=en-IN" target="_blank">
+                        Snapchat
+                    </a>
+
+                </div>
+
+                <hr>
+
+                <p>
+                    Created & Built by Charan Teja Epuri © 2026
+                </p>
+
+            </div>
+
+        </footer>
+
+        <script src="{{ url_for('static', filename = 'js/script.js')}}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    </body>
+</html>

@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+    <div class="card shadow-lg">
+
+        <div class="card-body p-5">
+
+            <h1 class="text-center mb-4">
+                QuickLink URL Shortener
+            </h1>
+
+            <div class="text-center mb-4">
+
+                <h1 class="display-5 fw-bold">
+                    Flask Powered URL Shortener
+                </h1>
+
+                <p class="lead">
+                    Generate short URLs, track clicks,
+                    analyze traffic and manage links
+                    with a modern Flask dashboard.
+                </p>
+
+            </div>
+
+            <form method="POST">
+
+                <div class="input-group">
+
+                    <input type="url" class="form-control" name="url" placeholder="Enter Long URL" required autofocus autocomplete="off" autosuggestions="off">
+
+                    <button class="btn btn-primary" type="submit">
+
+                        Shorten URL
+
+                    </button>
+
+                </div>
+
+            </form>
+
+            {% if short_url %}
+
+                <div class="alert alert-success mt-4">
+
+                    <h5>Short URL Generated</h5>
+
+                    <div class="input-group mb-3">
+                        
+                        <input type="text" id="shortURL" class="form-control" value="{{ short_url }}" readonly>
+
+                        <button class="btn btn-success" onclick="copyURL()">
+
+                            Copy
+
+                        </button>
+                        
+                    </div>
+
+                    <div class="text-center">
+                        <img src="{{ url_for('static', filename = qr_path)}}" width="200" alt="QR Code">
+                    </div>
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
