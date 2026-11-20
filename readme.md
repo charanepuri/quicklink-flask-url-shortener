@@ -1,135 +1,115 @@
-# QuickLink - Flask URL Shortener & Analytics Platform
+# QuickLink - Flask URL Shortener
 
 ## Overview
 
-QuickLink is a Flask-based URL Shortener and Analytics Platform that allows users to generate short URLs, track clicks, view analytics, generate QR codes, and interact with REST APIs. The application provides a modern dashboard with search, statistics, and data visualization features.
+QuickLink is a lightweight, responsive Flask-based URL Shortener that allows users to quickly convert long web addresses into short, shareable links, dynamically generate QR codes, and track link visits.
 
 ---
 
 ## Features
 
-### URL Management
+### URL Shortening & Redirection
+- **Instant URL Shortening**: Generates unique, compact 6-character short codes.
+- **Auto-Protocol Handling**: Automatically prefixes `https://` if omitted.
+- **URL Validation**: Ensures entered links are syntactically valid before shortening.
+- **Fast Redirection**: Instantly routes users to the destination URL.
+- **Visit Tracking**: Automatically counts clicks for each shortened link.
 
-- Generate short URLs
-- Redirect to original URLs
-- Delete URLs
-- Search URLs
-- Click tracking
+### QR Code & Sharing
+- **Dynamic QR Code Generation**: Automatically creates a QR code for every shortened link.
+- **One-Click Download**: Direct download button to save generated QR code images.
+- **One-Click Copy**: Built-in clipboard copy button with user feedback.
+- **Direct Link Preview**: Quick shortcut to test the generated URL immediately.
 
-### Analytics
-
-- Total URLs statistics
-- Total clicks statistics
-- Average clicks calculation
-- Most visited URL
-- Top 5 links chart using Chart.js
-
-### Additional Features
-
-- QR Code generation
-- Copy URL functionality
-- Responsive Bootstrap UI
+### User Interface & Experience
+- Clean, modern layout built with **Bootstrap 5**.
+- Inline dismissible alerts for error handling.
+- Production-ready with reverse-proxy support (`ProxyFix`).
 
 ---
 
 ## Tech Stack
 
 ### Backend
-
-- Flask
-- SQLAlchemy
-- SQLite
+- **Python 3**
+- **Flask**
+- **Flask-SQLAlchemy**
+- **SQLite**
+- **Gunicorn** (for production deployments)
 
 ### Frontend
-
-- HTML5
-- CSS3
-- Bootstrap 5
-- JavaScript
-- Chart.js
+- **HTML5** & **CSS3**
+- **Bootstrap 5**
+- **JavaScript (ES6+)**
 
 ### Additional Libraries
-
-- qrcode
-- Pillow
+- **qrcode** & **Pillow** (QR code generation)
+- **Werkzeug** (ProxyFix middleware)
 
 ---
 
 ## Project Structure
 
-url-shortener-flask/
-
-├── app.py
-
-├── models.py
-
-├── config.py
-
-├── requirements.txt
-
-├── templates/
-
+```text
+Quick Link URL Shortener/
+├── app.py                     # Application routes & core logic
+├── config.py                  # App configuration & environment variables
+├── models.py                  # SQLAlchemy URL database model
+├── Procfile                   # Deployment process file (Render / Heroku)
+├── requirements.txt           # Python dependencies
 ├── static/
-
-│ ├── css/
-
-│ ├── js/
-
-│ └── qr/
-
+│   ├── css/
+│   │   └── style.css          # Custom styling & Bootstrap enhancements
+│   ├── js/
+│   │   └── script.js          # Clipboard copy functionality
+│   ├── qr/                    # Generated QR code image files
+│   └── QuickLink-Documentation.pdf # Project documentation
+├── templates/
+│   ├── base.html              # Base HTML template with navbar & footer
+│   └── index.html             # Main shortener UI & result container
 └── instance/
-
-```
-└── urls.db
+    └── urls.db                # SQLite database
 ```
 
 ---
 
-## Installation
+## Installation & Local Setup
 
-1. Clone Repository
-
+### 1. Clone the Repository
+```bash
 git clone https://github.com/charanepuri/quicklink-flask-url-shortener.git
-
-2. Navigate to Project
-
 cd quicklink-flask-url-shortener
+```
 
-3. Create Virtual Environment
-
+### 2. Create and Activate Virtual Environment
+**Windows:**
+```powershell
 python -m venv venv
-
-4. Activate Environment
-
-Windows:
-
 venv\Scripts\activate
+```
 
-5. Install Dependencies
+**macOS / Linux:**
+```bash
+python3 -m venv venv
+source venv/bin/activate
+```
 
+### 3. Install Dependencies
+```bash
 pip install -r requirements.txt
+```
 
-6. Run Application
-
+### 4. Run the Application
+```bash
 python app.py
-
----
-
-## Learning Outcomes
-
-- Flask Application Development
-- SQLAlchemy ORM
-- REST API Development
-- Database Design
-- QR Code Generation
-- Data Visualization
-- Responsive UI Design
-- Analytics Dashboard Development
+```
+Open [http://127.0.0.1:5000](http://127.0.0.1:5000) in your browser.
 
 ---
 
 ## Author
 
-Charan Teja Epuri
-
-Aspiring Python Full Stack Developer
+**Charan Teja Epuri**  
+- GitHub: [@charanepuri](https://github.com/charanepuri)  
+- LinkedIn: [Charan Teja Epuri](https://www.linkedin.com/in/charan-teja-972aa9231/)  
+- Repository: [quicklink-flask-url-shortener](https://github.com/charanepuri/quicklink-flask-url-shortener)
