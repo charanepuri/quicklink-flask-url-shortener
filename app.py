@@ -1,8 +1,9 @@
 import os
 import random
 import string
+import urllib.parse
 
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, abort
 from werkzeug.middleware.proxy_fix import ProxyFix
 
 from config import Config
@@ -21,6 +22,14 @@ db.init_app(app)
 
 with app.app_context():
     db.create_all()
+
+
+def is_valid_url(url):
+    try:
+        result = urllib.parse.urlparse(url)
+        return all([result.scheme in ("http", "https"), result.netloc])
+    except Exception:
+        return False
 
 
 def generate_short_code(length=6):
@@ -46,6 +55,7 @@ def home():
     short_url = None
     qr_path = None
     short_code = None
+    error = None
 
     if request.method == "POST":
 
@@ -55,44 +65,55 @@ def home():
             if not original_url.startswith(("http://", "https://")):
                 original_url = "https://" + original_url
 
-            short_code = generate_short_code()
+            if not is_valid_url(original_url):
+                error = "Please enter a valid URL (e.g. https://example.com)."
+            else:
+                short_code = generate_short_code()
 
-            new_url = URL(
-                original_url=original_url,
-                short_code=short_code
-            )
+                new_url = URL(
+                    original_url=original_url,
+                    short_code=short_code
+                )
 
-            db.session.add(new_url)
-            db.session.commit()
+                db.session.add(new_url)
+                db.session.commit()
 
-            short_url = request.host_url + short_code
-            
-            qr_filename = f"{short_code}.png"
-            qr_path = f"qr/{qr_filename}"
-            
-            img = qrcode.make(short_url)
-            
-            os.makedirs(
-                "static/qr",
-                exist_ok=True
-            )
-            
-            img.save(
-                f"static/qr/{qr_filename}"
-            )
+                short_url = request.host_url + short_code
+                
+                qr_filename = f"{short_code}.png"
+                qr_path = f"qr/{qr_filename}"
+                
+                img = qrcode.make(short_url)
+                
+                os.makedirs(
+                    "static/qr",
+                    exist_ok=True
+                )
+                
+                img.save(
+                    f"static/qr/{qr_filename}"
+                )
 
     return render_template(
         "index.html",
         short_url=short_url,
         short_code=short_code,
-        qr_path=qr_path
+        qr_path=qr_path,
+        error=error
     )
 
 @app.route("/<short_code>")
 def redirect_to_original(short_code):
+    # Ignore favicon.ico and other browser asset probes
+    if short_code in ("favicon.ico", "robots.txt", "static"):
+        abort(404)
+
     url = URL.query.filter_by(short_code=short_code).first()
     if not url:
-        return "<h2>URL not found</h2>", 404
+        return render_template(
+            "index.html",
+            error="Short URL not found or has expired."
+        ), 404
     
     url.clicks += 1
     db.session.commit()

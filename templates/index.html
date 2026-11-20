@@ -40,6 +40,13 @@
 
             </form>
 
+            {% if error %}
+                <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+                    {{ error }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endif %}
+
             {% if short_url %}
 
                 <div class="result-card p-4 mt-4 shadow-sm">
