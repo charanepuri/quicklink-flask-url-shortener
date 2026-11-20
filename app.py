@@ -1,15 +1,19 @@
+import os
 import random
 import string
 
-from flask import Flask, render_template, request , redirect
+from flask import Flask, render_template, request, redirect
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 from config import Config
 from models import db, URL
 
 import qrcode
-import os
 
 app = Flask(__name__)
+
+# Handle reverse proxies (e.g., Render, Heroku) so request.host_url correctly resolves to https
+app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1)
 
 app.config.from_object(Config)
 
@@ -40,6 +44,8 @@ def generate_short_code(length=6):
 def home():
 
     short_url = None
+    qr_path = None
+    short_code = None
 
     if request.method == "POST":
 
@@ -61,7 +67,8 @@ def home():
 
             short_url = request.host_url + short_code
             
-            qr_path = f"qr/{short_code}.png"
+            qr_filename = f"{short_code}.png"
+            qr_path = f"qr/{qr_filename}"
             
             img = qrcode.make(short_url)
             
@@ -71,13 +78,14 @@ def home():
             )
             
             img.save(
-                f"static/qr/{short_code}.png"
+                f"static/qr/{qr_filename}"
             )
 
     return render_template(
         "index.html",
         short_url=short_url,
-        qr_path=qr_path if short_url else None
+        short_code=short_code,
+        qr_path=qr_path
     )
 
 @app.route("/<short_code>")

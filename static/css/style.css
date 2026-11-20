@@ -21,19 +21,22 @@ h1{
 }
 
 form{
-    display:flex;
-    gap:10px;
+    display:block;
+    width: 100%;
 }
 
-input{
-    flex:1;
-    padding:12px;
-    font-size:16px;
+.input-group {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    width: 100%;
 }
 
-button{
-    padding:12px 20px;
-    cursor:pointer;
+.input-group > .form-control {
+    position: relative;
+    flex: 1 1 auto;
+    width: 1%;
+    min-width: 0;
 }
 
 .result{
@@ -103,19 +106,62 @@ body{
     letter-spacing:1px;
 }
 
-/* Cards */
-
-.card{
-    border:1px solid #e0e0e0;
-    border-radius:8px;
-    background:#fcfcfc;
-    box-shadow:0 2px 4px rgba(0,0,0,0.05);
+/* Custom Card Styling */
+.main-card {
+    border-radius: 16px;
+    border: 1px solid #eaeaea;
+    background: #ffffff;
 }
 
-.card:hover{
-    transform:translateY(-3px);
-    transition:0.3s;
-    box-shadow:0 4px 8px rgba(0,0,0,0.1);
+/* Fix Button Conflicts with Bootstrap */
+.form-input-custom {
+    padding: 12px 16px;
+    font-size: 1rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px 0 0 8px !important;
+}
+
+.form-input-custom:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
+}
+
+.btn-shorten {
+    padding: 12px 24px;
+    font-weight: 600;
+    font-size: 1rem;
+    border-radius: 0 8px 8px 0 !important;
+    white-space: nowrap;
+}
+
+/* Result Box */
+.result-card {
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+}
+
+.result-input {
+    background-color: #ffffff !important;
+    font-weight: 500;
+    color: #1e293b;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px 0 0 8px !important;
+}
+
+.btn-copy {
+    border-radius: 0 8px 8px 0 !important;
+    font-weight: 600;
+    padding: 10px 20px;
+}
+
+.qr-wrapper {
+    background: #ffffff;
+    display: inline-block;
+    padding: 14px;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 /* Footer */
@@ -153,21 +199,26 @@ body{
     height:1px;
 }
 
-/* Flask Themed Buttons */
-
-button,
-.dashboard-btn,
-.back-btn{
-    background:#000000;
-    color:#ffffff;
-    border:1px solid #000000;
-    border-radius:4px;
-    transition:0.2s;
+.btn-primary:not(:disabled):not(.disabled) {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+    color: #ffffff;
 }
 
-button:hover,
-.dashboard-btn:hover,
-.back-btn:hover{
-    background:#ffffff;
-    color:#000000;
+.btn-primary:hover {
+    background-color: #0b5ed7;
+    border-color: #0a58ca;
+    color: #ffffff;
+}
+
+.btn-success:not(:disabled):not(.disabled) {
+    background-color: #198754;
+    border-color: #198754;
+    color: #ffffff;
+}
+
+.btn-success:hover {
+    background-color: #157347;
+    border-color: #146c43;
+    color: #ffffff;
 }

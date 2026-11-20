@@ -2,39 +2,38 @@
 
 {% block content %}
 
-<div class="container mt-5">
+<div class="container my-5" style="max-width: 680px;">
 
-    <div class="card shadow-lg">
+    <div class="card shadow-lg main-card">
 
-        <div class="card-body p-5">
-
-            <h1 class="text-center mb-4">
-                QuickLink URL Shortener
-            </h1>
+        <div class="card-body p-4 p-md-5">
 
             <div class="text-center mb-4">
-
-                <h1 class="display-5 fw-bold">
-                    Flask Powered URL Shortener
+                <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-3 py-2 rounded-pill mb-3">
+                    Fast & Simple
+                </span>
+                <h1 class="display-6 fw-bold mb-2">
+                    QuickLink URL Shortener
                 </h1>
-
-                <p class="lead">
-                    Generate short URLs, download QR codes,
-                    and manage your links with Flask.
+                <p class="text-muted">
+                    Generate short URLs, download QR codes, and share easily.
                 </p>
-
             </div>
 
-            <form method="POST">
+            <form method="POST" class="mb-4">
 
-                <div class="input-group">
+                <div class="input-group input-group-lg shadow-sm">
 
-                    <input type="url" class="form-control" name="url" placeholder="Enter Long URL" required autofocus autocomplete="off" autosuggestions="off">
+                    <input type="url" 
+                           class="form-control form-input-custom" 
+                           name="url" 
+                           placeholder="https://example.com/very-long-url" 
+                           required 
+                           autofocus 
+                           autocomplete="off">
 
-                    <button class="btn btn-primary" type="submit">
-
+                    <button class="btn btn-primary btn-shorten" type="submit">
                         Shorten URL
-
                     </button>
 
                 </div>
@@ -43,24 +42,43 @@
 
             {% if short_url %}
 
-                <div class="alert alert-success mt-4">
+                <div class="result-card p-4 mt-4 shadow-sm">
 
-                    <h5>Short URL Generated</h5>
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <h6 class="fw-bold text-success mb-0">
+                            ✓ Your Short URL is Ready
+                        </h6>
+                        <a href="{{ short_url }}" target="_blank" class="small text-decoration-none">
+                            Visit Link ↗
+                        </a>
+                    </div>
 
-                    <div class="input-group mb-3">
+                    <div class="input-group mb-4 shadow-sm">
                         
-                        <input type="text" id="shortURL" class="form-control" value="{{ short_url }}" readonly>
+                        <input type="text" 
+                               id="shortURL" 
+                               class="form-control result-input" 
+                               value="{{ short_url }}" 
+                               readonly>
 
-                        <button class="btn btn-success" onclick="copyURL()">
-
+                        <button class="btn btn-success btn-copy" type="button" onclick="copyURL()">
                             Copy
-
                         </button>
                         
                     </div>
 
                     <div class="text-center">
-                        <img src="{{ url_for('static', filename = qr_path)}}" width="200" alt="QR Code">
+                        <p class="small text-muted mb-2">Scan QR code or click below to download:</p>
+                        <div class="qr-wrapper mb-3">
+                            <img src="{{ url_for('static', filename=qr_path) }}" width="180" height="180" alt="QR Code">
+                        </div>
+                        <div>
+                            <a href="{{ url_for('static', filename=qr_path) }}" 
+                               download="{{ short_code }}_qr.png" 
+                               class="btn btn-outline-secondary btn-sm">
+                                ⬇ Download QR Code
+                            </a>
+                        </div>
                     </div>
 
                 </div>
