@@ -43,32 +43,36 @@ def home():
 
     if request.method == "POST":
 
-        original_url = request.form.get("url")
+        original_url = request.form.get("url", "").strip()
 
-        short_code = generate_short_code()
+        if original_url:
+            if not original_url.startswith(("http://", "https://")):
+                original_url = "https://" + original_url
 
-        new_url = URL(
-            original_url=original_url,
-            short_code=short_code
-        )
+            short_code = generate_short_code()
 
-        db.session.add(new_url)
-        db.session.commit()
+            new_url = URL(
+                original_url=original_url,
+                short_code=short_code
+            )
 
-        short_url = request.host_url + short_code
-        
-        qr_path = f"qr/{short_code}.png"
-        
-        img = qrcode.make(short_url)
-        
-        os.makedirs(
-            "static/qr",
-            exist_ok=True
-        )
-        
-        img.save(
-            f"static/qr/{short_code}.png"
-        )
+            db.session.add(new_url)
+            db.session.commit()
+
+            short_url = request.host_url + short_code
+            
+            qr_path = f"qr/{short_code}.png"
+            
+            img = qrcode.make(short_url)
+            
+            os.makedirs(
+                "static/qr",
+                exist_ok=True
+            )
+            
+            img.save(
+                f"static/qr/{short_code}.png"
+            )
 
     return render_template(
         "index.html",

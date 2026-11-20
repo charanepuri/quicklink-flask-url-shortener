@@ -1,11 +1,15 @@
 function copyURL() {
 
     const urlField =
-        document.getElementById("shortUrl");
+        document.getElementById("shortURL");
+
+    if (!urlField) return;
 
     navigator.clipboard.writeText(
         urlField.value
-    );
-
-    alert("URL Copied!");
+    ).then(() => {
+        alert("URL Copied!");
+    }).catch(err => {
+        console.error("Failed to copy URL: ", err);
+    });
 }
