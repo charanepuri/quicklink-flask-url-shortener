@@ -3,7 +3,7 @@ import random
 import string
 import urllib.parse
 
-from flask import Flask, render_template, request, redirect, abort
+from flask import Flask, render_template, request, redirect, abort, session, url_for
 from werkzeug.middleware.proxy_fix import ProxyFix
 
 from config import Config
@@ -52,11 +52,6 @@ def generate_short_code(length=6):
 @app.route("/", methods=["GET", "POST"])
 def home():
 
-    short_url = None
-    qr_path = None
-    short_code = None
-    error = None
-
     if request.method == "POST":
 
         original_url = request.form.get("url", "").strip()
@@ -66,7 +61,7 @@ def home():
                 original_url = "https://" + original_url
 
             if not is_valid_url(original_url):
-                error = "Please enter a valid URL (e.g. https://example.com)."
+                session["error"] = "Please enter a valid URL (e.g. https://example.com)."
             else:
                 short_code = generate_short_code()
 
@@ -81,7 +76,6 @@ def home():
                 short_url = request.host_url + short_code
                 
                 qr_filename = f"{short_code}.png"
-                qr_path = f"qr/{qr_filename}"
                 
                 img = qrcode.make(short_url)
                 
@@ -93,6 +87,18 @@ def home():
                 img.save(
                     f"static/qr/{qr_filename}"
                 )
+
+                session["short_url"] = short_url
+                session["short_code"] = short_code
+                session["qr_path"] = f"qr/{qr_filename}"
+
+        return redirect(url_for("home"))
+
+    # Pop session values on GET so they display once and clear on refresh
+    short_url = session.pop("short_url", None)
+    short_code = session.pop("short_code", None)
+    qr_path = session.pop("qr_path", None)
+    error = session.pop("error", None)
 
     return render_template(
         "index.html",
